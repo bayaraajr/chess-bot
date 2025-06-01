@@ -20,7 +20,7 @@ def board_to_matrix(board):
     return board_matrix
 
 
-def extract_positions_and_labels(pgn_path, max_games=1000):
+def extract_positions_and_labels(pgn_path, max_games=1000, min_avg_elo=0):
     positions = []
     labels = []
 
@@ -29,6 +29,17 @@ def extract_positions_and_labels(pgn_path, max_games=1000):
             game = chess.pgn.read_game(f)
             if game is None:
                 break
+
+            # Get player Elos and compute average
+            white_elo = game.headers.get("WhiteElo")
+            black_elo = game.headers.get("BlackElo")
+            try:
+                avg_elo = (int(white_elo) + int(black_elo)) / 2
+            except (TypeError, ValueError):
+                continue  # Skip games with missing or invalid Elo
+
+            if avg_elo < min_avg_elo:
+                continue
 
             result = game.headers.get("Result")
             if result == "1-0":
@@ -50,7 +61,7 @@ def extract_positions_and_labels(pgn_path, max_games=1000):
 
 
 pgn_path = "../data/lichess_db_standard_rated_2015-03.pgn"
-positions, labels = extract_positions_and_labels(pgn_path, max_games=500)
+positions, labels = extract_positions_and_labels(pgn_path, max_games=500, min_avg_elo=2500 )
 
 print(f"Extracted {len(positions)} positions.")
 

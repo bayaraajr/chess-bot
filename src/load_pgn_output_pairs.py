@@ -14,7 +14,7 @@ def board_to_tensor(board):
 
 def move_to_index(move):
     """Convert a move into an integer index."""
-    return move.from_square * 64 + move.to_square  # 0-4095
+    return move.from_square * 64 + move.to_square
 
 def index_to_move(index):
     """Convert index back to move."""
