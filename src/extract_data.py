@@ -60,7 +60,7 @@ def extract_positions_and_labels(pgn_path, max_games=1000, min_avg_elo=0):
     return positions, labels
 
 
-pgn_path = "../data/lichess_db_standard_rated_2015-03.pgn"
+pgn_path = "../data/lichess_db_standard_rated_2019-07.pgn"
 positions, labels = extract_positions_and_labels(pgn_path, max_games=500, min_avg_elo=2500 )
 
 print(f"Extracted {len(positions)} positions.")

@@ -7,8 +7,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all domains
 model = tf.keras.models.load_model("../models/chess_move_cnn.h5")
-model_medium = tf.keras.models.load_model("../models/chess_move_cnn.h5")
-model_hard = tf.keras.models.load_model("../models/chess_move_cnn.h5")
+model_medium = tf.keras.models.load_model("../models/chess_move_cnn_medium.h5")
+model_hard = tf.keras.models.load_model("../models/chess_move_cnn_hard.h5")
 
 
 def convert_board_to_model_input(board):
@@ -48,6 +48,7 @@ def decode_prediction_to_move(prediction, board):
     # If nothing is legal, return a random legal move
     return list(board.legal_moves)[0]
 
+
 @app.route("/predict", methods=["POST"])
 def predict_with_difficulty():
     data = request.json
@@ -57,6 +58,7 @@ def predict_with_difficulty():
 
     model_input = convert_board_to_model_input(board)
 
+    print(difficulty)
     # Select model based on difficulty
     if difficulty == "easy":
         prediction = model.predict(model_input)
