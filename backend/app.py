@@ -71,6 +71,7 @@ def predict_with_difficulty():
 
     best_move = decode_prediction_to_move(prediction, board)
 
+    print('Predicted best move: ' + best_move.uci())
     return jsonify({"move": best_move.uci()})
 
 
